@@ -1,0 +1,19 @@
+{
+  "name": "web-scrap",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "drays": "bun run ./app/web/drays.ts"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cheerio": "^1.0.0",
+    "sanitize-filename": "^1.6.3",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.8.3"
+  }
+}

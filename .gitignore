@@ -1,0 +1,12 @@
+# Node/Bun
+node_modules/
+bun.lockb
+
+# Env
+.env
+
+# IDE
+.vscode/
+.DS_Store
+
+data
