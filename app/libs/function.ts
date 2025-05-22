@@ -91,21 +91,26 @@ export function generatePageUrls(
 export async function downloadImage(
   url: string,
   folderPath: string
-): Promise<string> {
-  const res = await fetch(url, fetchOption({ url }));
-  if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+): Promise<string | null> {
+  try {
+    const res = await fetch(url, fetchOption({ url }));
+    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
 
-  const buffer = await res.arrayBuffer();
+    const buffer = await res.arrayBuffer();
 
-  fs.mkdirSync(folderPath, { recursive: true });
+    fs.mkdirSync(folderPath, { recursive: true });
 
-  const imgFilename = url.split('/').pop() || 'image';
-  const filenameWithoutExt = path.parse(imgFilename).name;
-  const outputPath = path.join(folderPath, filenameWithoutExt + '.webp');
+    const imgFilename = url.split('/').pop() || 'image';
+    const filenameWithoutExt = path.parse(imgFilename).name;
+    const outputPath = path.join(folderPath, filenameWithoutExt + '.webp');
 
-  await sharp(Buffer.from(buffer)).webp({ quality: 50 }).toFile(outputPath);
+    await sharp(Buffer.from(buffer)).webp({ quality: 50 }).toFile(outputPath);
 
-  return filenameWithoutExt + '.webp';
+    return filenameWithoutExt + '.webp';
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 }
 
 export function sleep(ms: number): Promise<void> {

@@ -69,7 +69,9 @@ for (const link of listUrl) {
     }
 
     const title = $('.postdetail h1').text().trim();
-    const imgPost = `/${info.year}/${info.month}/${imgUpload}`;
+    const imgPost = imgUpload
+      ? `/${info.year}/${info.month}/${imgUpload}`
+      : '/default/no-image.webp';
     const imgLarge = $('.backdrop img').attr('src');
     const year = $(items[0]).text().trim();
     const country = $(items[1]).text().trim();
