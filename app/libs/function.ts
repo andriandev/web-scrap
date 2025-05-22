@@ -42,25 +42,28 @@ export async function openLinks(
 }
 
 export function extractImageInfo(url: string) {
-  const regex = /\/(\d{4})\/(\d{2})\/(\d+)_/;
-  const match = url.match(regex);
+  const regexWithTimestamp = /\/(\d{4})\/(\d{2})\/(\d+)_/;
+  const regexWithoutTimestamp = /\/(\d{4})\/(\d{2})\//;
 
-  if (!match)
-    return {
-      year: '2000',
-      month: '01',
-      timestamp: '946684800',
-    };
+  let year = '2000';
+  let month = '01';
+  let timestamp = `${new Date(`${year}-${month}-01`).getTime() / 1000}`;
 
-  const [, year, month, timestamp] = match;
-  return {
-    year,
-    month,
-    timestamp,
-  };
+  const matchWithTS = url.match(regexWithTimestamp);
+  const matchWithoutTS = url.match(regexWithoutTimestamp);
+
+  if (matchWithTS) {
+    [, year, month, timestamp] = matchWithTS;
+  } else if (matchWithoutTS) {
+    [, year, month] = matchWithoutTS;
+    timestamp = `${new Date(`${year}-${month}-01`).getTime() / 1000}`;
+  }
+
+  return { year, month, timestamp };
 }
 
 export function extractYouTubeId(url: string): string | null {
+  if (!url.includes('youtube.com')) return null;
   const match = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 }

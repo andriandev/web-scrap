@@ -61,7 +61,12 @@ for (const link of listUrl) {
 
     const items = $('.postdetail .thn .mr-4');
     const ytSrc = $('#tab-2.tab-content iframe').attr('src');
-    const linkHtml = `<div id="dl_tab">${$('#dl_tab').html()}</div>`;
+    let linkElement = $('#dl_tab').html();
+    let linkHtml = `<div id="dl_tab">${linkElement}</div>`;
+    if (!linkElement) {
+      linkElement = $('table.download').html();
+      linkHtml = `<table id="download">${linkElement}</table>`;
+    }
 
     const title = $('.postdetail h1').text().trim();
     const imgPost = `/${info.year}/${info.month}/${imgUpload}`;
