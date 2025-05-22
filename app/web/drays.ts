@@ -2,14 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import chalk from 'chalk';
+import { openLinks, downloadImage, sleep } from '../libs/function';
 import {
-  openLinks,
   extractImageInfo,
   extractYouTubeId,
   generatePageUrls,
-  downloadImage,
-  sleep,
-} from '../libs/function';
+} from '../libs/function-drays';
 
 const baseUrl = process.env.BASE_URL || '';
 const start = Number(process.env.START) || 1;
@@ -38,6 +36,7 @@ for (const link of listUrl) {
     const folderPath = path.join(
       process.cwd(),
       'data',
+      'drays',
       type,
       info.year,
       info.month
@@ -49,6 +48,7 @@ for (const link of listUrl) {
     const imgFolderPath = path.join(
       process.cwd(),
       'data',
+      'drays',
       'img',
       info.year,
       info.month
