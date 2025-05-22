@@ -14,6 +14,8 @@ import {
 const baseUrl = process.env.BASE_URL || '';
 const start = Number(process.env.START) || 1;
 const end = Number(process.env.END) || 2;
+const delayListPage = Number(process.env.DELAY_LIST_PAGE) || 1000;
+const delayDetailPage = Number(process.env.DELAY_DETAIL_PAGE) || 1000;
 
 const listUrl = generatePageUrls(baseUrl, start, end);
 const log = console.log;
@@ -105,7 +107,7 @@ for (const link of listUrl) {
 
     fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
     log(chalk.green('Scraped:', url));
-    await sleep(1000);
+    await sleep(delayDetailPage);
   });
-  await sleep(3000);
+  await sleep(delayListPage);
 }
