@@ -8,7 +8,7 @@ function fetchOption({ url = '' }) {
     headers: {
       'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      Referer: url,
+      Referer: filterUrl(url),
     },
     tls: {
       rejectUnauthorized: false,
@@ -68,4 +68,9 @@ export async function downloadImage(
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function filterUrl(url: string): string {
+  // Gunakan regex untuk menghapus karakter non-alfanumerik kecuali garis miring, titik, dan tanda hubung
+  return url.replace(/[^\w\-\/.:]+/g, '');
 }
