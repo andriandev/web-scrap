@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "drays": "bun run ./app/web/drays.ts",
-    "kuso": "bun run ./app/web/kuso.ts"
+    "kuso": "bun run ./app/web/kuso.ts",
+    "mvk": "bun run ./app/web/mvk.ts"
   },
   "dependencies": {
     "chalk": "^5.4.1",
