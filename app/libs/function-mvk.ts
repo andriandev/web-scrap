@@ -115,22 +115,35 @@ export function getInfoMovie(htmlString: string): MovieData {
 
 export function getSinopsis(htmlString: string): string {
   const $ = cheerio.load(htmlString);
+  const filteredParagraphsHtml: string[] = [];
 
-  // Seleksi semua elemen <p> yang berada di dalam '.synops .entry-content'
   const allPs = $('.entry-content p');
 
-  // Periksa apakah ada tag <p> yang ditemukan
-  if (allPs.length > 0) {
-    // Konversi koleksi Cheerio menjadi array JavaScript DOM node.
-    // Kemudian, untuk setiap node, ambil outer HTML-nya (termasuk tag <p> itu sendiri)
-    // dan gabungkan semua string HTML menjadi satu.
-    const combinedPsHtml = allPs
-      .toArray()
-      .map((el) => $.html(el))
-      .join('');
-    return combinedPsHtml;
-  }
+  allPs.each((_i, el) => {
+    const $p = $(el); // Objek Cheerio untuk paragraf saat ini
 
-  // Jika tidak ada tag <p> yang ditemukan, kembalikan string kosong
-  return '';
+    // Ambil outer HTML dari paragraf asli untuk pengecekan "Sinopsis"
+    const currentParagraphOuterHtml = $.html($p);
+
+    if (!currentParagraphOuterHtml.includes('Sinopsis')) {
+      // **Langkah Kunci:** Kloning paragraf untuk modifikasi agar tidak mempengaruhi DOM utama
+      const $clonedP = $p.clone();
+
+      // Hapus semua tag <a> di dalam kloning paragraf dan ganti dengan teksnya
+      $clonedP.find('a').each((_j, aEl) => {
+        const $a = $(aEl); // Menggunakan "$" dari instance Cheerio utama
+        $a.replaceWith($a.text());
+      });
+
+      // Ambil outer HTML dari paragraf yang sudah dimodifikasi (kloningan)
+      // Ini akan mengembalikan <p>...</p> tanpa tambahan <html><body>
+      const modifiedParagraphHtml = $.html($clonedP);
+
+      if (modifiedParagraphHtml) {
+        filteredParagraphsHtml.push(modifiedParagraphHtml);
+      }
+    }
+  });
+
+  return filteredParagraphsHtml.join('');
 }
