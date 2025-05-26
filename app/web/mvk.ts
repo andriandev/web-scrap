@@ -19,6 +19,7 @@ import {
   downloadImage,
   sleep,
   generateLinksArray,
+  errorScrapType,
 } from '../libs/function';
 import {
   generatePageUrls,
@@ -162,5 +163,5 @@ if (scrapType == 'list') {
     await getContentTypeDetail(link);
   }
 } else {
-  log(chalk.red(`Scrap type must be list or detail received ${scrapType}`));
+  errorScrapType(scrapType);
 }

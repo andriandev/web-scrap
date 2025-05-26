@@ -18,6 +18,7 @@ function fetchOption({ url = '' }) {
 
 export async function fetchHTML(url: string): Promise<cheerio.CheerioAPI> {
   const res = await fetch(url, fetchOption({ url: url }));
+  if (!res.ok) throw new Error(`Failed fetch ${url}`);
   const html = await res.text();
   return cheerio.load(html);
 }
@@ -47,7 +48,7 @@ export async function downloadImage(
 ): Promise<string | null> {
   try {
     const res = await fetch(url, fetchOption({ url }));
-    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+    if (!res.ok) throw new Error(`Failed download image ${url}`);
 
     const buffer = await res.arrayBuffer();
 
@@ -84,4 +85,8 @@ export function sleep(ms: number): Promise<void> {
 export function filterUrl(url: string): string {
   // Gunakan regex untuk menghapus karakter non-alfanumerik kecuali garis miring, titik, dan tanda hubung
   return url.replace(/[^\w\-\/.:]+/g, '');
+}
+
+export function errorScrapType(type: string): void {
+  console.error(`Scrap type must be list or detail received ${type}`);
 }
