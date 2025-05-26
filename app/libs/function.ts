@@ -66,6 +66,17 @@ export async function downloadImage(
   }
 }
 
+export function generateLinksArray(linkString: string): string[] {
+  // Trim spasi di awal/akhir string, lalu pisahkan berdasarkan koma.
+  // map() digunakan untuk memastikan setiap link juga bersih dari spasi ekstra.
+  const links = linkString
+    .split(',')
+    .map((link) => link.trim())
+    .filter((link) => link.length > 0); // Filter untuk menghilangkan string kosong jika ada koma ganda atau di ujung
+
+  return links;
+}
+
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
